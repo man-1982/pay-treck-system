@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TaskFactory extends Factory
 {
+    protected $model =Task::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +19,15 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name'          => fake()->sentence(8, TRUE),
+            'description'   => fake()->paragraph(2, TRUE),
+            'image_path'    => fake()->imageUrl(),
+            'status'        => fake()->randomElement(['pending', 'in_progress', 'completed']),
+            'priority'      => fake()->randomElement(['low', 'medium', 'high']),
+            'due_date'      => fake()->dateTimeBetween('now', '+3 year'),
+            'assigned_to'   => 1, //for the start use user 1
+            'created_by'    => 1, //for the start use user 1
+            'updated_by'    => 1, //for the start use user 1
         ];
     }
 }
