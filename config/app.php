@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+
+//$environment = App::environment();
+
 return [
 
     /*
@@ -26,7 +30,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'local'),
 
     /*
     |--------------------------------------------------------------------------
