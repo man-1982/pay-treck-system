@@ -14,10 +14,29 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        $sortFields = request('sort_fields', 'created_at');
+        $sortDirection = request('sort_direction', 'desc');
+
+        // common query for all projects. further filtering can be done
         $query = Project::query();
-        $projects = $query->paginate(10)->onEachSide(1);
+
+        if (request()->has('name')){
+            $query->where('name', 'like', '%' . request('name') . '%');
+        }
+
+        if(request()->has('status')){
+            $query->where('status', request('status'));
+        }
+
+        $projects = $query
+                        ->orderBy($sortFields, $sortDirection)
+                        ->paginate(10)
+                        ->onEachSide(1);
         return inertia('Projects/Index', [
-            'projects' => ProjectResource::collection($projects),
+            'projects'      => ProjectResource::collection($projects),
+            // return the query string parameters
+            // wil be used in searchFieldChanged method in the React component
+            'queryParams'   => request()->query()?: null, // if empty return null
         ]);
     }
 
